@@ -1,32 +1,122 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>HeartBuddha Meditation Bot</title>
-  <style>
-    body {
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: linear-gradient(135deg, #FBC2EB, #A6C1EE);
-      font-family: sans-serif;
-    }
-    .container {
-      background: white;
-      padding: 25px;
-      border-radius: 20px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HeartBuddha Meditation Bot</title>
+<style>
+  body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: sans-serif;
+    background: linear-gradient(135deg, #FBC2EB, #A6C1EE);
+  }
+  .container {
+    background: white;
+    max-width: 400px;
+    width: 90%;
+    padding: 25px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+  }
+  select, button {
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+  }
+  button {
+    background: #d8b4b4;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  #countdown {
+    font-size: 32px;
+    margin-top: 20px;
+    color: #333;
+  }
+  #guidance {
+    margin-top: 15px;
+    font-size: 16px;
+    color: #555;
+    min-height: 32px;
+  }
+</style>
 </head>
 <body>
-  <div class="container">
-    <!-- YOUR BOT SCRIPT GOES HERE -->
-    <h2>Meditation Timer Bot</h2>
-    <p>Bot loading...</p>
-  </div>
+<div class="container">
+  <h2>🧘‍♀️ HeartBuddha Meditation</h2>
+  <p>Choose your meditation duration:</p>
+  <select id="duration">
+    <option value="60">1 Minute – Quick Reset</option>
+    <option value="180">3 Minutes – Calm Mind</option>
+    <option value="300">5 Minutes – Deep Relaxation</option>
+  </select>
+  <br>
+  <button id="startBtn">Start Meditation</button>
+  <button id="stopBtn" style="background:#aaa;">Stop</button>
+  <div id="countdown">00:00</div>
+  <div id="guidance">Prepare yourself...</div>
+</div>
+
+<script>
+const messages = [
+  "Inhale slowly…",
+  "Hold for a gentle moment…",
+  "Exhale softly…",
+  "Let your shoulders relax…",
+  "You are safe. You are grounded."
+];
+
+let timer = null;
+let step = 0;
+
+const countdownEl = document.getElementById('countdown');
+const guidanceEl = document.getElementById('guidance');
+
+function formatTime(t) {
+  const m = Math.floor(t/60);
+  const s = t%60;
+  return (m<10?'0':'') + m + ':' + (s<10?'0':'') + s;
+}
+
+function startMeditation() {
+  clearInterval(timer);
+  step = 0;
+  let time = parseInt(document.getElementById('duration').value,10);
+  guidanceEl.textContent = messages[0];
+
+  timer = setInterval(() => {
+    countdownEl.textContent = formatTime(time);
+
+    if(time % 5 === 0) {
+      guidanceEl.textContent = messages[step % messages.length];
+      step++;
+    }
+
+    if(time <= 0) {
+      clearInterval(timer);
+      countdownEl.textContent = "✨ Complete ✨";
+      guidanceEl.textContent = "Thank you for taking this moment with HeartBuddha.";
+      try { new Audio("https://actions.google.com/sounds/v1/alarms/digital_watch_alarm.ogg").play(); } catch(e){}
+    }
+
+    time--;
+  },1000);
+}
+
+document.getElementById('startBtn').addEventListener('click', startMeditation);
+document.getElementById('stopBtn').addEventListener('click', () => {
+  clearInterval(timer);
+  countdownEl.textContent = "00:00";
+  guidanceEl.textContent = "Prepare yourself...";
+});
+</script>
 </body>
 </html>
