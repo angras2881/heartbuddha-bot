@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HeartBuddha Mood Tracker</title>
+<title>HeartBuddha Compact Mood Tracker</title>
 <style>
   body {
     margin: 0;
@@ -16,40 +15,88 @@
     height: 100%;
   }
   .container {
-    max-width: 600px;
+    max-width: 550px;
     width: 90%;
     background: white;
-    padding: 15px;
-    border-radius: 20px;
+    padding: 12px; /* reduced padding */
+    border-radius: 16px;
     text-align: center;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
   h2 {
-    margin-bottom: 10px;
-    font-size: 22px;
+    margin-bottom: 8px;
+    font-size: 20px;
+  }
+  p {
+    margin: 5px 0;
+    font-size: 14px;
   }
   .mood-buttons {
     display: flex;
     justify-content: space-between;
-    flex-wrap: nowrap; /* horizontal layout */
+    flex-wrap: nowrap;
     margin-top: 10px;
   }
   .mood-btn {
     flex: 1 1 auto;
-    font-size: 26px;
-    padding: 10px;
-    margin: 3px;
-    border-radius: 12px;
+    font-size: 24px;
+    padding: 8px;
+    margin: 2px;
+    border-radius: 10px;
     border: 1px solid #ccc;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
   }
   .mood-btn:hover {
-    transform: scale(1.2);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transform: scale(1.15);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
   }
   #feedback {
-    margin-top: 12px;
+    margin-top: 10px;
+    font-size: 13px;
+    color: #555;
+    min-height: 28px;
+    line-height: 1.3;
+  }
 
+  @media(max-width:500px){
+    .mood-buttons { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h2>💛 Mood Tracker</h2>
+  <p>How are you feeling today?</p>
+  <div class="mood-buttons">
+    <button class="mood-btn" data-mood="happy">😄</button>
+    <button class="mood-btn" data-mood="neutral">😐</button>
+    <button class="mood-btn" data-mood="sad">😔</button>
+    <button class="mood-btn" data-mood="stressed">😫</button>
+    <button class="mood-btn" data-mood="calm">😌</button>
+  </div>
+  <div id="feedback">Select a mood above to get guidance.</div>
+</div>
 
+<script>
+const feedbackEl = document.getElementById('feedback');
 
+const moodResponses = {
+  happy: ["Awesome! Keep riding this positive energy.","Take a moment to smile and savor it!"],
+  neutral: ["A neutral day is okay—observe your thoughts mindfully.","Try a short 1-minute breathing exercise to refresh."],
+  sad: ["It's okay to feel sad. You are allowed to feel.","Consider a gentle 3-minute meditation to ease tension."],
+  stressed: ["Take a deep breath—you’ve got this.","Try the HeartBuddha 3-minute calming meditation now."],
+  calm: ["Wonderful! Maintain this calm with mindful breathing.","You can journal your thoughts for a few minutes."]
+};
+
+document.querySelectorAll('.mood-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const mood = btn.getAttribute('data-mood');
+    const responses = moodResponses[mood];
+    const randomMsg = responses[Math.floor(Math.random()*responses.length)];
+    feedbackEl.textContent = randomMsg;
+  });
+});
+</script>
+</body>
+</html>
