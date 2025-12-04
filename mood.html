@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HeartBuddha Mood Tracker</title>
+<title>HeartBuddha Horizontal Mood Tracker</title>
 <style>
   body {
     margin: 0;
@@ -19,7 +18,7 @@
     background: white;
     max-width: 450px;
     width: 90%;
-    padding: 25px;
+    padding: 20px;
     border-radius: 20px;
     text-align: center;
     box-shadow: 0 6px 18px rgba(0,0,0,0.1);
@@ -27,24 +26,31 @@
   h2 {
     margin-bottom: 15px;
   }
+  .mood-buttons {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 15px;
+  }
   .mood-btn {
     font-size: 28px;
     padding: 12px;
-    margin: 8px;
+    margin: 5px;
     border-radius: 12px;
     border: 1px solid #ccc;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
+    flex: 1 1 18%; /* adjusts width to fit 5 buttons horizontally */
   }
   .mood-btn:hover {
     transform: scale(1.2);
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   }
   #feedback {
-    margin-top: 20px;
+    margin-top: 15px;
     font-size: 16px;
     color: #555;
-    min-height: 50px;
+    min-height: 40px;
     line-height: 1.4;
   }
 </style>
@@ -53,7 +59,7 @@
 <div class="container">
   <h2>💛 HeartBuddha Mood Tracker</h2>
   <p>How are you feeling today?</p>
-  <div>
+  <div class="mood-buttons">
     <button class="mood-btn" data-mood="happy">😄</button>
     <button class="mood-btn" data-mood="neutral">😐</button>
     <button class="mood-btn" data-mood="sad">😔</button>
@@ -100,4 +106,8 @@ document.querySelectorAll('.mood-btn').forEach(btn => {
 </script>
 </body>
 </html>
+
+
+
+
 
