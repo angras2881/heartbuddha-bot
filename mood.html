@@ -4,17 +4,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HeartBuddha Meditation & Mood Bot</title>
+<title>HeartBuddha Mood Tracker</title>
 <style>
   body {
     margin: 0;
     font-family: sans-serif;
     background: linear-gradient(135deg, #FBC2EB, #A6C1EE);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
   }
   .container {
     max-width: 600px;
     width: 90%;
-    margin: 40px auto;
     background: white;
     padding: 20px;
     border-radius: 20px;
@@ -24,38 +27,16 @@
   h2 {
     margin-bottom: 15px;
   }
-  /* Tab buttons */
-  .tabs {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  .tab-btn {
-    flex: 1;
-    padding: 10px;
-    margin: 0 5px;
-    border-radius: 12px;
-    border: 1px solid #ccc;
-    background: #f5f5f5;
-    cursor: pointer;
-    transition: 0.2s;
-  }
-  .tab-btn.active {
-    background: #d8b4b4;
-    color: white;
-  }
-
-  /* Horizontal Mood Buttons */
   .mood-buttons {
     display: flex;
     justify-content: space-between;
-    flex-wrap: nowrap;
+    flex-wrap: nowrap; /* keeps buttons in one horizontal row */
     margin-top: 15px;
   }
   .mood-btn {
     flex: 1 1 auto;
     font-size: 28px;
-    padding: 10px;
+    padding: 12px;
     margin: 5px;
     border-radius: 12px;
     border: 1px solid #ccc;
@@ -66,30 +47,7 @@
     transform: scale(1.2);
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   }
-
-  /* Meditation controls */
-  .controls {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    margin-top: 15px;
-  }
-  .controls select, .controls button {
-    flex: 1 1 auto;
-    margin: 5px;
-    padding: 8px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    cursor: pointer;
-  }
-  .controls button {
-    background: #d8b4b4;
-    color: white;
-    border: none;
-  }
-
-  /* Feedback & Countdown */
-  #feedback, #countdown, #guidance {
+  #feedback {
     margin-top: 15px;
     font-size: 16px;
     color: #555;
@@ -97,76 +55,28 @@
     line-height: 1.4;
   }
 
-  /* Responsive */
   @media(max-width:500px){
     .mood-buttons { flex-wrap: wrap; }
-    .controls { flex-direction: column; }
   }
-
 </style>
 </head>
 <body>
 <div class="container">
-  <h2>💛 HeartBuddha Bot</h2>
-  
-  <!-- Tabs -->
-  <div class="tabs">
-    <div class="tab-btn active" id="tab-mood">Mood Tracker</div>
-    <div class="tab-btn" id="tab-meditation">Meditation Timer</div>
+  <h2>💛 HeartBuddha Mood Tracker</h2>
+  <p>How are you feeling today?</p>
+  <div class="mood-buttons">
+    <button class="mood-btn" data-mood="happy">😄</button>
+    <button class="mood-btn" data-mood="neutral">😐</button>
+    <button class="mood-btn" data-mood="sad">😔</button>
+    <button class="mood-btn" data-mood="stressed">😫</button>
+    <button class="mood-btn" data-mood="calm">😌</button>
   </div>
-
-  <!-- Mood Tracker -->
-  <div id="mood-section">
-    <p>How are you feeling today?</p>
-    <div class="mood-buttons">
-      <button class="mood-btn" data-mood="happy">😄</button>
-      <button class="mood-btn" data-mood="neutral">😐</button>
-      <button class="mood-btn" data-mood="sad">😔</button>
-      <button class="mood-btn" data-mood="stressed">😫</button>
-      <button class="mood-btn" data-mood="calm">😌</button>
-    </div>
-    <div id="feedback">Select a mood above to get guidance.</div>
-  </div>
-
-  <!-- Meditation Timer -->
-  <div id="meditation-section" style="display:none;">
-    <p>Choose your meditation duration:</p>
-    <div class="controls">
-      <select id="duration">
-        <option value="60">1 Min</option>
-        <option value="180">3 Min</option>
-        <option value="300">5 Min</option>
-      </select>
-      <button id="startBtn">Start</button>
-      <button id="stopBtn" style="background:#aaa;">Stop</button>
-    </div>
-    <div id="countdown">00:00</div>
-    <div id="guidance">Prepare yourself...</div>
-  </div>
+  <div id="feedback">Select a mood above to get guidance.</div>
 </div>
 
 <script>
-/* TAB SWITCHING */
-const tabMood = document.getElementById('tab-mood');
-const tabMeditation = document.getElementById('tab-meditation');
-const moodSection = document.getElementById('mood-section');
-const meditationSection = document.getElementById('meditation-section');
-
-tabMood.addEventListener('click', () => {
-  moodSection.style.display = 'block';
-  meditationSection.style.display = 'none';
-  tabMood.classList.add('active');
-  tabMeditation.classList.remove('active');
-});
-tabMeditation.addEventListener('click', () => {
-  moodSection.style.display = 'none';
-  meditationSection.style.display = 'block';
-  tabMeditation.classList.add('active');
-  tabMood.classList.remove('active');
-});
-
-/* MOOD TRACKER */
 const feedbackEl = document.getElementById('feedback');
+
 const moodResponses = {
   happy: ["Awesome! Keep riding this positive energy.","Take a moment to smile and savor it!"],
   neutral: ["A neutral day is okay—observe your thoughts mindfully.","Try a short 1-minute breathing exercise to refresh."],
@@ -174,6 +84,7 @@ const moodResponses = {
   stressed: ["Take a deep breath—you’ve got this.","Try the HeartBuddha 3-minute calming meditation now."],
   calm: ["Wonderful! Maintain this calm with mindful breathing.","You can journal your thoughts for a few minutes."]
 };
+
 document.querySelectorAll('.mood-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const mood = btn.getAttribute('data-mood');
@@ -182,49 +93,9 @@ document.querySelectorAll('.mood-btn').forEach(btn => {
     feedbackEl.textContent = randomMsg;
   });
 });
-
-/* MEDITATION TIMER */
-let timer = null;
-let step = 0;
-const countdownEl = document.getElementById('countdown');
-const guidanceEl = document.getElementById('guidance');
-
-function formatTime(t){
-  const m=Math.floor(t/60);
-  const s=t%60;
-  return (m<10?'0':'')+m+':'+(s<10?'0':'')+s;
-}
-function startMeditation(){
-  clearInterval(timer);
-  step=0;
-  let time = parseInt(document.getElementById('duration').value,10);
-  guidanceEl.textContent = "Inhale slowly…";
-  const messages = ["Inhale slowly…","Hold gently…","Exhale softly…","Relax your shoulders…","You are grounded."];
-  timer=setInterval(()=>{
-    countdownEl.textContent = formatTime(time);
-    if(time % 5 === 0){
-      guidanceEl.textContent = messages[step % messages.length];
-      step++;
-    }
-    if(time <= 0){
-      clearInterval(timer);
-      countdownEl.textContent="✨ Complete ✨";
-      guidanceEl.textContent="Thank you for taking this moment with HeartBuddha.";
-      try{ new Audio("https://actions.google.com/sounds/v1/alarms/digital_watch_alarm.ogg").play(); }catch(e){}
-    }
-    time--;
-  },1000);
-}
-document.getElementById('startBtn').addEventListener('click',startMeditation);
-document.getElementById('stopBtn').addEventListener('click',()=>{
-  clearInterval(timer);
-  countdownEl.textContent="00:00";
-  guidanceEl.textContent="Prepare yourself...";
-});
 </script>
 </body>
 </html>
-
 
 
 
